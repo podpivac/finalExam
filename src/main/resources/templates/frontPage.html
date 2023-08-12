@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Final Exam Set C</title>
+    <link th:href="@{./style.css}" rel="stylesheet">
+
+</head>
+<body>
+<h1>Final Exam Set C</h1>
+<table>
+    <caption>Category Sales Summary Table</caption>
+    <thead>
+    <tr>
+        <th>Category Code</th>
+        <th>Category Description</th>
+        <th>Total Sales</th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+<form onsubmit="return validateForm()" th:action="@{/save}" method="post">
+    <div class="input-group">
+        <label for="receiptNo">Receipt No:</label>
+        <input type="text" id="receiptNo" name="receiptNo">
+    </div>
+
+    <div class="input-group">
+        <label for="itemType">Item Type:</label>
+        <select id="itemType" name="itemType">
+            <option value="" disabled selected>Select option</option>
+            <option th:each="item : ${itemsList}" th:value="${item.ICode}"
+                    th:text="${item.ICode + ': ' + item.IDesc + ''}"></option>
+        </select>
+    </div>
+
+    <div class="input-group">
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" name="quantity">
+    </div>
+
+    <div class="input-group">
+        <label for="transactionDate">Transaction Date:</label>
+        <input type="date" id="transactionDate" name="transactionDate">
+    </div>
+
+    <input type="submit" value="Save">
+
+</form>
+<table>
+    <thead>
+    <tr>
+        <th>Receipt No</th>
+        <th>Item Code</th>
+        <th>Quantity</th>
+        <th>Transaction Date</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="sale : ${salesList}">
+        <td th:text="${sale.recNo}"></td>
+        <td th:text="${sale.icoDe}"></td>
+        <td th:text="${sale.quantity}"></td>
+        <td th:text="${sale.date}"></td>
+        <td>
+            <button>Edit</button>
+            <button class="delete-btn" th:data-id="${sale.id}">Delete</button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</table>
+</body>
+</html>
+
+<script>
+    function validateForm() {
+        var receiptNo = document.getElementById("receiptNo").value;
+        var quantity = document.getElementById("quantity").value;
+
+        if (receiptNo === "") {
+            alert("Receipt number is required");
+            return false;
+        }
+
+        if (quantity === "" || parseInt(quantity) <= 0) {
+            alert("Quantity must be a positive number");
+            return false;
+        }
+
+        // You can add more validation logic here
+
+        return true;
+    }
+</script>
